@@ -1,0 +1,24 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-bluetooth-serial": {
+      "PACKAGE_NAME": "org.apache.cordova.TheLock2"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "org.apache.cordova.TheLock2"
+    },
+    "phonegap-plugin-speech-synthesis": {
+      "PACKAGE_NAME": "org.apache.cordova.TheLock2"
+    },
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "org.apache.cordova.TheLock2"
+    }
+  },
+  "dependent_plugins": {}
+}

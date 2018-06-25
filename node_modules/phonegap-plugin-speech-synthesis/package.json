@@ -1,0 +1,99 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "https://github.com/macdonst/SpeechSynthesisPlugin",
+        "scope": null,
+        "escapedName": null,
+        "name": null,
+        "rawSpec": "https://github.com/macdonst/SpeechSynthesisPlugin",
+        "spec": "git+https://github.com/macdonst/SpeechSynthesisPlugin.git",
+        "type": "hosted",
+        "hosted": {
+          "type": "github",
+          "ssh": "git@github.com:macdonst/SpeechSynthesisPlugin.git",
+          "sshUrl": "git+ssh://git@github.com/macdonst/SpeechSynthesisPlugin.git",
+          "httpsUrl": "git+https://github.com/macdonst/SpeechSynthesisPlugin.git",
+          "gitUrl": "git://github.com/macdonst/SpeechSynthesisPlugin.git",
+          "shortcut": "github:macdonst/SpeechSynthesisPlugin",
+          "directUrl": "https://raw.githubusercontent.com/macdonst/SpeechSynthesisPlugin/master/package.json"
+        }
+      },
+      "/Users/petervirtanen/OneDrive/PhoneGap/TheLock2"
+    ]
+  ],
+  "_from": "git+https://github.com/macdonst/SpeechSynthesisPlugin.git",
+  "_id": "phonegap-plugin-speech-synthesis@0.1.1",
+  "_inCache": true,
+  "_location": "/phonegap-plugin-speech-synthesis",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "https://github.com/macdonst/SpeechSynthesisPlugin",
+    "scope": null,
+    "escapedName": null,
+    "name": null,
+    "rawSpec": "https://github.com/macdonst/SpeechSynthesisPlugin",
+    "spec": "git+https://github.com/macdonst/SpeechSynthesisPlugin.git",
+    "type": "hosted",
+    "hosted": {
+      "type": "github",
+      "ssh": "git@github.com:macdonst/SpeechSynthesisPlugin.git",
+      "sshUrl": "git+ssh://git@github.com/macdonst/SpeechSynthesisPlugin.git",
+      "httpsUrl": "git+https://github.com/macdonst/SpeechSynthesisPlugin.git",
+      "gitUrl": "git://github.com/macdonst/SpeechSynthesisPlugin.git",
+      "shortcut": "github:macdonst/SpeechSynthesisPlugin",
+      "directUrl": "https://raw.githubusercontent.com/macdonst/SpeechSynthesisPlugin/master/package.json"
+    }
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "git+https://github.com/macdonst/SpeechSynthesisPlugin.git#9075aa3afb960642de49daf192303098a62acd80",
+  "_shasum": "4f2fadec240f5f3a75d430c236f69007fd02e58e",
+  "_shrinkwrap": null,
+  "_spec": "https://github.com/macdonst/SpeechSynthesisPlugin",
+  "_where": "/Users/petervirtanen/OneDrive/PhoneGap/TheLock2",
+  "author": {
+    "name": "Simon MacDonald"
+  },
+  "bugs": {
+    "url": "https://github.com/macdonst/SpeechSynthesisPlugin/issues"
+  },
+  "cordova": {
+    "id": "phonegap-plugin-speech-synthesis",
+    "platforms": [
+      "ios",
+      "android",
+      "browser"
+    ]
+  },
+  "dependencies": {
+    "jasmine-node": "^1.14.5",
+    "pluginpub": "0.0.8"
+  },
+  "description": "W3C Web Speech API - Speech synthesis plugin for PhoneGap",
+  "devDependencies": {},
+  "gitHead": "9075aa3afb960642de49daf192303098a62acd80",
+  "homepage": "https://github.com/macdonst/SpeechSynthesisPlugin#readme",
+  "keywords": [
+    "ecosystem:cordova",
+    "ecosystem:phonegap",
+    "cordova-ios",
+    "cordova-android",
+    "cordova-browser"
+  ],
+  "license": "MIT",
+  "name": "phonegap-plugin-speech-synthesis",
+  "optionalDependencies": {},
+  "readme": "# SpeechSynthesisPlugin\n\nW3C Web Speech API - Speech synthesis plugin for PhoneGap\n\n# Installation\n\n## Phone Gap\n\nUsing the command line tools run:\n\n    phonegap plugin add https://github.com/macdonst/SpeechSynthesisPlugin\n    cordova plugin add https://github.com/macdonst/SpeechSynthesisPlugin\n\n## Cordova\n\nThis plugin also works with the Apache Cordova toolset. See this Github project for an example for Android:\n\n    https://github.com/andysylvester/talk-to-me-cordova\n\nMore info on using this plugin with Cordova is available at this <a href=\"http://andysylvester.com/2014/02/08/first-steps-with-cordova-talk-to-me/\">blog post</a>.\n\n\n# Example Code\n\n\nThis code from the above Github project shows how to read the value of a text field, set up the plugin to speak that text, and vibrate the phone for 2 seconds:\n\n     function playVibrate() {\n        var u = new SpeechSynthesisUtterance();\n        var x = document.getElementById(\"frm1\");\n        var txt = \"\";\n        txt = x.elements[0].value\n        u.text = txt;\n        u.lang = 'en-US';\n        speechSynthesis.speak(u);      \n        navigator.notification.vibrate(2000);\n        document.getElementById(\"frm1\").reset();\n      }\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/macdonst/SpeechSynthesisPlugin.git"
+  },
+  "scripts": {
+    "test": "jasmine-node --color spec"
+  },
+  "version": "0.1.1"
+}

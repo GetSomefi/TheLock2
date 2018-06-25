@@ -1,0 +1,254 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+/*
+http://www.color-hex.com/color-palette/61142
+#ffffff (255,255,255)
+#d8d8d8 (216,216,216)
+#ff8649 (255,134,73)
+#f96a22 (249,106,34)
+#000000 (0,0,0)
+#6e6e6e (216, 216, 216)
+*/
+
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+}
+
+body {
+    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+    background-color:#E4E4E4;
+    background-image:linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+    background-image:-webkit-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+    background-image:-ms-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+    background-image:-webkit-gradient(
+        linear,
+        left top,
+        left bottom,
+        color-stop(0, #A7A7A7),
+        color-stop(0.51, #E4E4E4)
+    );
+    background-attachment:fixed;
+    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+    font-size:12px;
+    height:100%;
+    margin:0px;
+    padding:0px;
+    text-transform:uppercase;
+    width:100%;
+}
+
+.app {
+    height: 100vh;
+    background: rgba(215, 215, 215, 0.25);
+}
+h1 {
+    font-size:24px;
+    font-weight:normal;
+    margin:0px;
+    overflow:visible;
+    padding:0px;
+    text-align:center;
+}
+
+.event {
+    border-radius:4px;
+    -webkit-border-radius:4px;
+    color:#FFFFFF;
+    font-size:12px;
+    margin:0px 30px;
+    padding:2px 0px;
+}
+
+.event.listening {
+    background-color:#333333;
+    display:block;
+}
+
+.event.received {
+    background-color:#4B946A;
+    display:none;
+}
+
+@keyframes fade {
+    from { opacity: 1.0; }
+    50% { opacity: 0.4; }
+    to { opacity: 1.0; }
+}
+ 
+@-webkit-keyframes fade {
+    from { opacity: 1.0; }
+    50% { opacity: 0.4; }
+    to { opacity: 1.0; }
+}
+ 
+.blink {
+    animation:fade 3000ms infinite;
+    -webkit-animation:fade 3000ms infinite;
+}
+
+.row{
+    display: flex;
+}
+.col-4 {
+    display: block;
+    width: 33%;
+}
+
+html {
+    height: 100vh;
+}
+body {
+    background: url(../img/bg-road.jpg);
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+    background-position: 45% center;
+}
+#branding {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 20px 0px;
+    border-bottom: 5px solid;
+    position: relative;
+    width: 100%;
+}
+
+#branding img {
+    max-height: 80px;
+}
+#branding h2 {
+    margin: 0;
+    font-size: 0.95em;
+    color: #428eb2;
+    margin-top: -7px;
+}
+
+div#ui {
+    position: relative;
+    top: 0;
+    left: 0;
+    padding: 0;
+    width: 100%;
+    height: 110px;
+}
+
+div#messageParent {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 0;
+    font-size: 8px;
+    font-family: monospace;
+    color: black;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin: auto;
+    right: 0;
+}
+div#messageParent p{
+    padding: 15px;
+    margin: 0;    
+    margin-bottom: 5px;
+}
+#lock-connected{
+    display: none;
+}
+
+button{
+    -webkit-transition: all .2s linear;
+    transition: all .2s linear;
+}
+button#openLock, button#connectButton {
+    border: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-family: helvetica;
+    font-size: 1.5em;
+    color: #343434;
+    outline: none !important;
+    margin: auto;
+    position: relative;
+    display: block;
+    padding: 15px 30px;
+    border-bottom: 5px solid #f96a22;
+}
+button#connectButton {
+    font-size: 1em;
+    position: absolute;
+    margin: 15px;  
+    border-bottom: 2.5px solid #f96a22;
+}
+button#connectButton.beat-offline {
+    padding: 30px 45px;
+    background: rgba(0, 0, 0, 0.85);
+    right: 50%;
+    -webkit-transform: translateX(50%);
+    transform: translateX(50%);
+    margin: 30px 0px;
+    color: #FFF;
+}
+button#connectButton.beat-online {
+    padding: 15px 30px;
+    background: rgba(216, 216, 216, 0.85);
+    color: #6e6e6e;
+    font-size: 0.7em;
+    right: 0;
+}
+button.beat-tapped {
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
+    background-color: rgba(216,216,216,0.7) !important;
+}
+button#connectButton.beat-offline.beat-tapped{
+    -webkit-transform: translateX(50%) scale(0.9) !important;
+    transform: translateX(50%) scale(0.9) !important;
+}
+
+button#openLock {
+    height: 180px;
+    width: 180px;
+    background: rgba(66, 142, 178, 0.85);
+    color: #FFF;
+    border-radius: 100%;
+    border: none;
+}
+
+/*settings & menu*/
+button#settings, button#menu {
+    width: 60px;
+    top: 50%;
+    position: relative;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+}
+button#settings img {
+    width: 100%;
+}
+button#menu span {
+    border-bottom: 5px solid black;
+    width: 30px;
+    height: 5px;
+    display: block;
+    margin: auto;
+}
