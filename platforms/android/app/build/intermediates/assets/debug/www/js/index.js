@@ -16,12 +16,28 @@ var app = {
 */
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
-        
-        connectButton.addEventListener('touchstart', app.tapHighlight, false);
-        openLock.addEventListener('touchstart', app.tapHighlight, false);
 
         connectButton.addEventListener('touchend', app.manageConnection, false);
         openLock.addEventListener('touchend', app.sendToDevice, false);
+
+        var pageChangeEl = document.getElementsByClassName("page-change");
+        for (var i1 = 0; i1 < pageChangeEl.length; i1++) {
+            pageChangeEl[i1].addEventListener('touchend', app.pageChange, false);
+        }
+
+        //to get tap effect add tapable class
+        var tapableEl = document.getElementsByClassName("tapable");
+        for (var i2 = 0; i2 < tapableEl.length; i2++) {
+            tapableEl[i2].addEventListener('touchstart', app.tapHighlight, false);
+            tapableEl[i2].addEventListener('touchend', app.tapHighlightOff, false);
+        }
+
+        //back button routes to main
+        var backEl = document.getElementsByClassName("back");
+        for (var i3 = 0; i3 < tapableEl.length; i3++) {
+            backEl[i3].addEventListener('touchstart', app.backToMain, false);
+        }
+
     },
 
 /*
@@ -51,6 +67,14 @@ var app = {
         // if isEnabled returns failure, this function is called:
         var notEnabled = function() {
             app.display("Bluetooth is not enabled.")
+
+            //fi
+            //app.speak("Bluetooth ei ole käytössä.");
+            //es
+            app.speak("Bluetooth no está habilitado.");
+            //fi
+            //app.speak("Bluetooth is not enabled.");
+
         }
 
          // check if Bluetooth is on:
@@ -96,11 +120,27 @@ var app = {
         app.tapHighlightOff();
     },
     tapHighlight: function(e) {
-        var el = e.target;
-        el.classList.add("beat-tapped");
-        console.log('el',el); 
+        app.tapHighlightOff();
+        var el;
+
+        if(e.target.dataset.targetpage){
+            el = e.target;
+            el.classList.add("beat-tapped");
+
+            //console.log('el',el); 
+        }else if(e.target.offsetParent.dataset.targetpage){
+            el = e.target.offsetParent;
+            el.classList.add("beat-tapped");
+
+            //console.log('el',el); 
+        }else{
+            el = e.target;
+            el.classList.add("beat-tapped");
+
+            //console.log('el',el); 
+        }
     },
-    tapHighlightOff: function(e) {
+    tapHighlightOff: function() {
         var x = document.getElementsByClassName("beat-tapped");
         for (var i = 0; i < x.length; i++) {
             x[i].classList.remove("beat-tapped");
@@ -207,8 +247,8 @@ var app = {
                         console.log("Successful file read: " + this.result);
                         //displayFileData(fileEntry.fullPath + ": " + this.result);
                         document.getElementById("message").innerHTML = "Settings fetched!";
-                        settings = JSON.parse(this.result);
-                        console.log('Settings fetched', this.result);
+                        app.createSettings(this.result);
+
                         app.connectionProcedures();
                     };
 
@@ -218,6 +258,20 @@ var app = {
 
             }, app.wroteToFile);
         });
+    },
+    createSettings:function(settings){
+        console.log('Settings fetched', settings);
+        document.getElementById('settings-list').innerHTML = "list:<br />" + settings + "<br />----<br />";
+        var settings = JSON.parse(settings);
+
+        var icon;
+        for(key in settings){
+            icon = "<button class='setting-button' data-setting='"+key+"'>";
+                icon += "<img src='./img/"+key+".png' alt='"+key+"' />";
+                icon += "<span>" + settings[key] + "</span>";
+            icon = "</button>";
+            document.getElementById('settings-list').innerHTML += icon; 
+        }
     },
 
 /*
@@ -252,6 +306,13 @@ var app = {
     appends @error to the message div:
 */
     showError: function(error) {
+        //fi
+        //app.speak("Virhe");
+        //es
+        app.speak("Error");
+        //fi
+        //app.speak("Error");
+
         app.display(error);
     },
 
@@ -299,6 +360,13 @@ var app = {
         display.innerHTML = "Error:<br />" + data;        
     },
     sendToDevice:function(){
+        //fi
+        //app.speak("Avataan");
+        //es
+        app.speak("Apertura");
+        //fi
+        //app.speak("Opening");
+
         //bluetoothSerial.write("1");
         bluetoothSerial.write("905623");
 
@@ -315,6 +383,32 @@ var app = {
     },
     errorCallback:function(err){
         console.log('error ', err); 
+    },
+    //works with parent that has child
+    pageChange:function(e){
+        var page;
+        if(e.target.dataset.targetpage){
+            page = e.target.dataset.targetpage;
+        }else if(e.target.offsetParent.dataset.targetpage){
+            page = e.target.offsetParent.dataset.targetpage;
+        }else{
+            page = "404";
+        }
+
+        //clear
+        var clearEl = document.getElementsByClassName("page");
+        for (var i = 0; i < clearEl.length; i++) {
+            clearEl[i].classList.remove("active");
+        }
+        document.getElementById('page-'+page).classList.add("active");
+        console.log('target',page,e); 
+    },
+    backToMain:function(){
+        var clearEl = document.getElementsByClassName("page");
+        for (var i = 0; i < clearEl.length; i++) {
+            clearEl[i].classList.remove("active");
+        }
+        document.getElementById('page-main').classList.add("active");        
     }
 };      // end of app
 app.initialize();

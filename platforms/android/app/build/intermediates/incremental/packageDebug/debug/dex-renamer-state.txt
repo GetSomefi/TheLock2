@@ -1,4 +1,4 @@
-#Mon Jun 25 00:21:42 EEST 2018
+#Wed Jun 27 00:12:30 EEST 2018
 base.0=/Users/petervirtanen/OneDrive/PhoneGap/TheLock2/platforms/android/app/build/intermediates/transforms/dexMerger/debug/0
 renamed.0=classes.dex
 file.0=/Users/petervirtanen/OneDrive/PhoneGap/TheLock2/platforms/android/app/build/intermediates/transforms/dexMerger/debug/0/classes.dex

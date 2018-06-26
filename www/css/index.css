@@ -25,6 +25,7 @@ http://www.color-hex.com/color-palette/61142
 #000000 (0,0,0)
 #6e6e6e (216, 216, 216)
 */
+/*icons https://icons8.com/icon/set/bluetooth/ios*/
 
 * {
     -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
@@ -51,7 +52,6 @@ body {
     height:100%;
     margin:0px;
     padding:0px;
-    text-transform:uppercase;
     width:100%;
 }
 
@@ -66,6 +66,9 @@ h1 {
     overflow:visible;
     padding:0px;
     text-align:center;
+}
+h2{
+    text-transform:uppercase;
 }
 
 .event {
@@ -138,6 +141,7 @@ body {
     font-size: 0.95em;
     color: #428eb2;
     margin-top: -7px;
+    text-transform: uppercase;
 }
 
 div#ui {
@@ -176,6 +180,7 @@ div#messageParent p{
 button{
     -webkit-transition: all .2s linear;
     transition: all .2s linear;
+    outline: none !important;
 }
 button#openLock, button#connectButton {
     border: none;
@@ -213,14 +218,9 @@ button#connectButton.beat-online {
     font-size: 0.7em;
     right: 0;
 }
-button.beat-tapped {
-    -webkit-transform: scale(0.9);
-    transform: scale(0.9);
+/*tap effect*/
+.beat-tapped {
     background-color: rgba(216,216,216,0.7) !important;
-}
-button#connectButton.beat-offline.beat-tapped{
-    -webkit-transform: translateX(50%) scale(0.9) !important;
-    transform: translateX(50%) scale(0.9) !important;
 }
 
 button#openLock {
@@ -251,4 +251,48 @@ button#menu span {
     height: 5px;
     display: block;
     margin: auto;
+}
+
+/*pages*/
+section.page {
+    position: absolute;
+    top: 135px;
+    left: 0;
+    width: 100%;
+}
+
+.page {
+    -webkit-transition: all .2s linear;
+    transition: all .2s linear;
+      
+    -webkit-transform:translateX(-100%);
+    transform:translateX(-100%);
+}
+.page.active {
+    -webkit-transform:translateX(-0%);
+    transform:translateX(0%);
+}
+.page-margin {
+    padding: 15px;
+}
+
+/*back button*/
+button.back {
+    background: white;
+    height: 36px;
+    border: none;
+}
+.back span {
+    display: block;
+    height: 3px;
+    width: 20px;
+    background: black;
+}
+.back span.first {
+    transform: rotate(45deg);
+    transform-origin: 8px;
+}
+.back span.second{
+    transform: rotate(-45deg);
+    transform-origin:8px;
 }

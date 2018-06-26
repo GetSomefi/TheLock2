@@ -12,9 +12,12 @@
 
     <body>
         <div class="app">
+            <div id="messageParent">
+                <p id="message">Hello.</p>
+            </div>
             <div id="branding" class="row">
                 <div class="col-4">
-                    <button id="menu">
+                    <button id="menu" class="page-change tapable" data-targetpage="menu">
                         <span></span>
                         <span></span>
                         <span></span>
@@ -25,20 +28,33 @@
                     <h2>The Lock</h2>
                 </div>
                 <div class="col-4">
-                    <button id="settings">
+                    <button id="settings" class="page-change tapable" data-targetpage="settings" >
                         <img src="./img/settings.png">
                     </button>
                 </div>
             </div>
-            <div id="ui">
-                <button id="connectButton" class="beat-offline">Connect</button>
-            </div>
-            <div id="messageParent">
-                <p id="message">Hello.</p>
-            </div>
-            <div id="lock-connected">
-                <button id="openLock">Open</button>
-            </div>
+            <section id="page-main" class="active page">
+                <div id="ui">
+                    <button id="connectButton" class="beat-offline tapable">Connect</button>
+                </div>
+                <div id="lock-connected">
+                    <button id="openLock" class="tapable">Open</button>
+                </div>
+            </section>
+            <section id="page-settings" class="page">
+                <div class="page-margin">
+                    <button class="back">
+                        <span class="first"></span>
+                        <span class="second"></span>
+                    </button>
+                    <div>
+                        <h2>Settings</h2>
+                    </div>
+                    <div id="settings-list">
+                        Here's a setting list from file
+                    </div>
+                </div>
+            </section>
         </div>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
