@@ -269,7 +269,7 @@ var app = {
             icon = "<button class='setting-button' data-setting='"+key+"'>";
                 icon += "<img src='./img/"+key+".png' alt='"+key+"' />";
                 icon += "<span>" + settings[key] + "</span>";
-            icon = "</button>";
+            icon += "</button>";
             document.getElementById('settings-list').innerHTML += icon; 
         }
     },

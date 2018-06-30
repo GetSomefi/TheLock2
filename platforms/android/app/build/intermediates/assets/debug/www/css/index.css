@@ -296,3 +296,23 @@ button.back {
     transform: rotate(-45deg);
     transform-origin:8px;
 }
+
+/*settings*/
+button.setting-button {
+    background: no-repeat;
+    border: none;
+    width: 33.33333%;
+    height: 100px;
+    text-align: center;
+}
+button.setting-button span {
+    display: block;
+    margin-top: 15px;
+}
+button.setting-button img {
+    height: 50px;
+}
+
+
+
+
