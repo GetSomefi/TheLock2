@@ -35,7 +35,9 @@ var app = {
         //back button routes to main
         var backEl = document.getElementsByClassName("back");
         for (var i3 = 0; i3 < tapableEl.length; i3++) {
-            backEl[i3].addEventListener('touchstart', app.backToMain, false);
+            if( backEl[i3] ){
+                backEl[i3].addEventListener('touchstart', app.backToMain, false);
+            }
         }
 
     },
@@ -44,7 +46,15 @@ var app = {
     this runs when the device is ready for user interaction:
 */
     onDeviceReady: function() {
-        //app.fileWriter();
+        /*
+        //reset settings with these
+        var settings = {
+            lang:"es-ES",
+            sounds:1,
+            key:905623
+        }
+        app.fileWriter(settings);
+        */
 
         app.getSettings();
     },
@@ -71,9 +81,9 @@ var app = {
             //fi
             //app.speak("Bluetooth ei ole käytössä.");
             //es
-            app.speak("Bluetooth no está habilitado.");
+            //app.speak("Bluetooth no está habilitado.");
             //fi
-            //app.speak("Bluetooth is not enabled.");
+            app.speak("Bluetooth is not enabled.");
 
         }
 
@@ -160,9 +170,9 @@ var app = {
         //fi
         //app.speak("Yhteys muodostettu");
         //es
-        app.speak("Conectado");
+        //app.speak("Conectado");
         //fi
-        //app.speak("Connected");
+        app.speak("Connected");
 
         // change the button's name:
         connectButton.innerHTML = "Disconnect";
@@ -177,7 +187,7 @@ var app = {
         });
     },
 
-    fileWriter:function(){
+    fileWriter:function(settings){
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
 
             console.log('file system open: ' + fs.name);
@@ -185,24 +195,22 @@ var app = {
 
                 console.log("fileEntry is file? " + fileEntry.isFile.toString());
 
-                var settings = {
-                    lang:"es-ES",
-                    sounds:true
-                }
                 var dataObj = new Blob([JSON.stringify(settings)], { type: 'text/plain' });
-                app.writeFile(fileEntry, dataObj);
+                app.writeFile(fileEntry, dataObj, settings);
 
             }, app.wroteToFile);
 
         }, app.errorCallback);
     },
-    writeFile:function(fileEntry, dataObj) {
+    writeFile:function(fileEntry, dataObj, asObj) {
         // Create a FileWriter object for our FileEntry (log.txt).
         fileEntry.createWriter(function (fileWriter) {
 
             fileWriter.onwriteend = function() {
                 console.log("Successful file write...");
-                app.readFile(fileEntry);
+                //app.readFile(fileEntry);
+                settings = asObj;
+                app.createSettings(JSON.stringify(asObj));
             };
 
             fileWriter.onerror = function (e) {
@@ -247,6 +255,10 @@ var app = {
                         console.log("Successful file read: " + this.result);
                         //displayFileData(fileEntry.fullPath + ": " + this.result);
                         document.getElementById("message").innerHTML = "Settings fetched!";
+                        
+                        //store to global var
+                        settings = JSON.parse(this.result);
+
                         app.createSettings(this.result);
 
                         app.connectionProcedures();
@@ -264,13 +276,113 @@ var app = {
         document.getElementById('settings-list').innerHTML = "list:<br />" + settings + "<br />----<br />";
         var settings = JSON.parse(settings);
 
-        var icon;
         for(key in settings){
-            icon = "<button class='setting-button' data-setting='"+key+"'>";
-                icon += "<img src='./img/"+key+".png' alt='"+key+"' />";
-                icon += "<span>" + settings[key] + "</span>";
-            icon += "</button>";
-            document.getElementById('settings-list').innerHTML += icon; 
+            //create button
+            var btn = document.createElement("button");
+            btn.dataset.setting = key;
+            btn.dataset.settingValue = settings[key];
+            btn.classList.add('setting-button');
+            
+            //add icon and label
+            var icon = "<img src='./img/"+key+".png' alt='"+key+"' />";
+            icon += "<span>" + settings[key] + "</span>";            
+            btn.innerHTML = icon;
+
+            //touch event
+            btn.addEventListener('touchend', function(e){
+                app.changeSetting(e,settings);
+            }, false);
+            
+            //add to setting list
+            document.getElementById("settings-list").appendChild(btn);
+        }
+    },
+    changeSetting: function(e,settings){
+        //Prevent capturing down to child elements.
+        //e.stopPropagation();
+
+        console.log('e', e);
+        var el = e.target;
+        var setting;
+        setting = el.parentElement.dataset.setting;
+        var settingValue;
+        settingValue = el.parentElement.dataset.settingValue;
+
+        console.log( setting, settingValue );
+
+        if(setting == "sounds"){
+            if(settingValue == 1){
+                console.log('sounds are on... muting');
+                settings[setting] = 0;
+            }else{
+                console.log('sounds are off... unmuting');
+                settings[setting] = 1;
+            }
+            var writeFile = app.fileWriter(settings);
+        }
+
+        if(setting == "lang"){
+            if(settingValue == "es-ES"){
+                console.log('English');
+                settings[setting] = "en-EN";
+            }else if(settingValue == "en-EN"){
+                console.log('Suomi');
+                settings[setting] = "fi-FI";
+            }else if(settingValue == "fi-FI"){
+                console.log('Espana');
+                settings[setting] = "es-ES";
+            }
+            var writeFile = app.fileWriter(settings);
+        }
+
+        if(setting == "key"){
+            //original 905623
+            var msg = "<h2>You are about to change the key of The Lock 2</h2>";
+            msg += "<p><b>Note</b> that change of this setting will change the code <b>only</b> in app end!</p>";
+            msg += "<p>If you are not sure what you are doing please press Cancel</p>";
+            msg += "<div id='new-key-row'></div>";
+            msg += "<div id='key-confirmation-row'></div>";
+            document.getElementById('pop-message').innerHTML = "<div class='message-inner'>" + msg + "</div>";
+            //show popup
+            document.getElementById('pop-message').classList.add("show-popup");
+
+            var newKey = document.createElement("input");
+            newKey.type = "number"; 
+            newKey.id = 'new-key';
+            newKey.placeholder = "Set the new key";
+            document.getElementById("new-key-row").appendChild(newKey);
+
+            var btn = document.createElement("button");
+            btn.id = 'accept-button';
+            btn.innerHTML = "Confirm";
+            document.getElementById("key-confirmation-row").appendChild(btn);
+
+            var btnCancel = document.createElement("button");
+            btnCancel.id = 'cancel-button';
+            btnCancel.innerHTML = "Cancel";
+            document.getElementById("key-confirmation-row").appendChild(btnCancel);
+
+            //events for popup
+            btnCancel.addEventListener('touchend', function(){
+                document.getElementById('pop-message').classList.remove("show-popup");
+            }, false);
+
+            btn.addEventListener('touchend', function(){
+                btn.innerHTML = "Done";
+                console.log('newKey.value',newKey.value); 
+                settings[setting] = newKey.value;
+                var writeFile = app.fileWriter(settings);
+                setTimeout(function(){
+                    document.getElementById('pop-message').classList.remove("show-popup");
+                },1500);
+            }, false);
+
+            /*
+            document.getElementById('pop-message').classList.add("show-popup");
+            setTimeout(function(){
+                document.getElementById('pop-message').classList.remove("show-popup");
+            },5000);
+            */
         }
     },
 
@@ -286,9 +398,9 @@ var app = {
         //fi
         //app.speak("Yhteys katkaistu");
         //es
-        app.speak("Desconectado");
+        //app.speak("Desconectado");
         //fi
-        //app.speak("Disconnected");
+        app.speak("Disconnected");
 
         // change the button's name:
         connectButton.innerHTML = "Connect";
@@ -309,11 +421,33 @@ var app = {
         //fi
         //app.speak("Virhe");
         //es
-        app.speak("Error");
-        //fi
         //app.speak("Error");
+        //fi
+        app.speak("Error");
 
         app.display(error);
+        if( error == "Device connection was lost" ){
+            app.popMessage(error);
+            app.closePort();
+        }
+        if( error == "Unable to connect to device" ){
+            //fi
+            //app.speak("Tarkista, että lukossa on virta päällä ja kantaman sisällä");
+            //es
+            //app.speak("Verifique que la cerradura esté encendida y dentro del alcance");
+            //fi
+            app.speak("Please check that the lock is powered on and in range");
+
+            app.popMessage("Please check that the lock is powered on and in range");
+        }
+    },
+
+    popMessage: function(msg){
+        document.getElementById('pop-message').innerHTML = "<div class='message-inner'>" + msg + "</div>";
+        document.getElementById('pop-message').classList.add("show-popup");
+        setTimeout(function(){
+            document.getElementById('pop-message').classList.remove("show-popup");
+        },5000);
     },
 
 /*
@@ -336,6 +470,44 @@ var app = {
     },
 
     speak: function(text){
+        
+        if(settings.lang == "es-ES"){
+            if( text == "Opening" ){
+                text = "Apertura";
+            }
+            if( text == "Connected" ){
+                text = "Conectado";
+            }
+            if( text == "Disconnected" ){
+                text = "Desconectado";
+            }
+            if( text == "Bluetooth is not enabled." ){
+                text = "Bluetooth no está habilitado.";
+            }         
+            if( text == "Please check that the lock is powered on and in range" ){
+                text = "Verifique que la cerradura este encendida y dentro del alcance";
+            }
+        } else if(settings.lang == "fi-FI"){
+            if( text == "Opening" ){
+                text = "Avataan";
+            }
+            if( text == "Connected" ){
+                text = "Yhteys muodostettu";
+            }
+            if( text == "Disconnected" ){
+                text = "Yhteys katkaistu";
+            }
+            if( text == "Bluetooth is not enabled." ){
+                text = "Bluetooth ei ole käytössä.";
+            }
+            if( text == "Error" ){
+                text = "Virhe";
+            }
+            if( text == "Please check that the lock is powered on and in range" ){
+                text = "Tarkista, että lukossa on virta päällä ja kantaman sisällä";
+            }
+        }
+
         var speak = new SpeechSynthesisUtterance();
         speak.voiceURI = 'native';
         speak.volume = 1; // 0 to 1
@@ -345,7 +517,9 @@ var app = {
         speak.text = text;
         //speak.lang = 'en-US';
         //speak.lang = 'fi-FI';
-        speak.lang = 'es-ES';
+        //speak.lang = 'es-ES';
+        speak.lang = settings.lang;
+
         window.speechSynthesis.speak(speak);
     },
 
@@ -360,15 +534,12 @@ var app = {
         display.innerHTML = "Error:<br />" + data;        
     },
     sendToDevice:function(){
-        //fi
-        //app.speak("Avataan");
-        //es
-        app.speak("Apertura");
-        //fi
-        //app.speak("Opening");
+        app.speak("Opening");
 
         //bluetoothSerial.write("1");
-        bluetoothSerial.write("905623");
+        //bluetoothSerial.write("905623");
+        console.log('using code ', settings.key); 
+        bluetoothSerial.write(settings.key);
 
         //start listening
         interval = setInterval(function(){
